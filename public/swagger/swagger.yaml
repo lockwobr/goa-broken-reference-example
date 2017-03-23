@@ -1,0 +1,279 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  User:
+    description: A user (default view)
+    example:
+      CreatedAt: 2008-11-04T01:21:35-08:00
+      Email: brian.lockwood@harvestmedia.io
+      FirstName: Jane
+      LastName: Doe
+      UpdateAt: 1991-07-25T04:51:45-07:00
+      UserId: 8.6493626e+18
+      href: Ex sed recusandae et eos consequatur.
+    properties:
+      CreatedAt:
+        description: CreatedAt
+        example: 2008-11-04T01:21:35-08:00
+        format: date-time
+        type: string
+      Email:
+        description: Users Email address.
+        example: brian.lockwood@harvestmedia.io
+        format: email
+        type: string
+      FirstName:
+        description: First name of the user.
+        example: Jane
+        minLength: 2
+        type: string
+      LastName:
+        description: Last name of the user.
+        example: Doe
+        minLength: 2
+        type: string
+      UpdateAt:
+        description: UpdateAt
+        example: 1991-07-25T04:51:45-07:00
+        format: date-time
+        type: string
+      UserId:
+        description: Unique user ID
+        example: 8.6493626e+18
+        format: int64
+        type: integer
+      href:
+        description: API href for making requests on the user
+        example: Ex sed recusandae et eos consequatur.
+        type: string
+    title: 'Mediatype identifier: application/vnd.user+json; view=default'
+    type: object
+  UserCollection:
+    description: UserCollection is the media type for an array of User (default view)
+    example:
+    - CreatedAt: 2008-11-04T01:21:35-08:00
+      Email: brian.lockwood@harvestmedia.io
+      FirstName: Jane
+      LastName: Doe
+      UpdateAt: 1991-07-25T04:51:45-07:00
+      UserId: 8.6493626e+18
+      href: Ex sed recusandae et eos consequatur.
+    - CreatedAt: 2008-11-04T01:21:35-08:00
+      Email: brian.lockwood@harvestmedia.io
+      FirstName: Jane
+      LastName: Doe
+      UpdateAt: 1991-07-25T04:51:45-07:00
+      UserId: 8.6493626e+18
+      href: Ex sed recusandae et eos consequatur.
+    items:
+      $ref: '#/definitions/User'
+    title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
+    type: array
+  UserPayload:
+    description: A User.
+    example:
+      Email: Sed sed nisi ex.
+      FirstName: Amet eius tempora iusto sit.
+      LastName: Numquam velit et explicabo id.
+    properties:
+      Email:
+        example: Sed sed nisi ex.
+        type: string
+      FirstName:
+        example: Amet eius tempora iusto sit.
+        type: string
+      LastName:
+        example: Numquam velit et explicabo id.
+        type: string
+    required:
+    - FirstName
+    - LastName
+    - Email
+    title: UserPayload
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+info:
+  version: ""
+paths:
+  /user:
+    get:
+      description: Retrieve Users.
+      operationId: User#list
+      parameters:
+      - default: default
+        description: Which view of user would you like?
+        enum:
+        - default
+        - short
+        in: query
+        name: view
+        required: false
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UserCollection'
+        "404":
+          description: Not Found
+      summary: list User
+      tags:
+      - User
+    post:
+      description: Create new user
+      operationId: User#create
+      parameters:
+      - description: A User.
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UserPayload'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "409":
+          description: Conflict
+      summary: create User
+      tags:
+      - User
+  /user/{UserId}:
+    delete:
+      operationId: User#delete
+      parameters:
+      - description: Unique user ID
+        in: path
+        name: UserId
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      summary: delete User
+      tags:
+      - User
+    get:
+      description: Retrieve account with given id.
+      operationId: User#show
+      parameters:
+      - description: Unique user ID
+        in: path
+        name: UserId
+        required: true
+        type: integer
+      - default: default
+        description: Which view of user would you like?
+        enum:
+        - default
+        - short
+        in: query
+        name: view
+        required: false
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        "404":
+          description: Not Found
+      summary: show User
+      tags:
+      - User
+    put:
+      description: Create new user
+      operationId: User#update
+      parameters:
+      - description: Unique user ID
+        in: path
+        name: UserId
+        required: true
+        type: integer
+      - description: A User.
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UserPayload'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "409":
+          description: Conflict
+      summary: update User
+      tags:
+      - User
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  Conflict:
+    description: Conflict
+  NoContent:
+    description: No Content
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/User'
+swagger: "2.0"

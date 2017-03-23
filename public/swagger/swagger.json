@@ -1,0 +1,383 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": ""
+    },
+    "consumes": [
+        "application/json",
+        "application/xml",
+        "application/gob",
+        "application/x-gob"
+    ],
+    "produces": [
+        "application/json",
+        "application/xml",
+        "application/gob",
+        "application/x-gob"
+    ],
+    "paths": {
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "list User",
+                "description": "Retrieve Users.",
+                "operationId": "User#list",
+                "parameters": [
+                    {
+                        "name": "view",
+                        "in": "query",
+                        "description": "Which view of user would you like?",
+                        "required": false,
+                        "type": "string",
+                        "default": "default",
+                        "enum": [
+                            "default",
+                            "short"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserCollection"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "create User",
+                "description": "Create new user",
+                "operationId": "User#create",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "A User.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
+        },
+        "/user/{UserId}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "show User",
+                "description": "Retrieve account with given id.",
+                "operationId": "User#show",
+                "parameters": [
+                    {
+                        "name": "UserId",
+                        "in": "path",
+                        "description": "Unique user ID",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "view",
+                        "in": "query",
+                        "description": "Which view of user would you like?",
+                        "required": false,
+                        "type": "string",
+                        "default": "default",
+                        "enum": [
+                            "default",
+                            "short"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "update User",
+                "description": "Create new user",
+                "operationId": "User#update",
+                "parameters": [
+                    {
+                        "name": "UserId",
+                        "in": "path",
+                        "description": "Unique user ID",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "A User.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "delete User",
+                "operationId": "User#delete",
+                "parameters": [
+                    {
+                        "name": "UserId",
+                        "in": "path",
+                        "description": "Unique user ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "title": "Mediatype identifier: application/vnd.user+json; view=default",
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string",
+                    "description": "CreatedAt",
+                    "example": "2008-11-04T01:21:35-08:00",
+                    "format": "date-time"
+                },
+                "Email": {
+                    "type": "string",
+                    "description": "Users Email address.",
+                    "example": "brian.lockwood@harvestmedia.io",
+                    "format": "email"
+                },
+                "FirstName": {
+                    "type": "string",
+                    "description": "First name of the user.",
+                    "example": "Jane",
+                    "minLength": 2
+                },
+                "LastName": {
+                    "type": "string",
+                    "description": "Last name of the user.",
+                    "example": "Doe",
+                    "minLength": 2
+                },
+                "UpdateAt": {
+                    "type": "string",
+                    "description": "UpdateAt",
+                    "example": "1991-07-25T04:51:45-07:00",
+                    "format": "date-time"
+                },
+                "UserId": {
+                    "type": "integer",
+                    "description": "Unique user ID",
+                    "example": 8649362725687117000,
+                    "format": "int64"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "API href for making requests on the user",
+                    "example": "Ex sed recusandae et eos consequatur."
+                }
+            },
+            "description": "A user (default view)",
+            "example": {
+                "CreatedAt": "2008-11-04T01:21:35-08:00",
+                "Email": "brian.lockwood@harvestmedia.io",
+                "FirstName": "Jane",
+                "LastName": "Doe",
+                "UpdateAt": "1991-07-25T04:51:45-07:00",
+                "UserId": 8649362725687117000,
+                "href": "Ex sed recusandae et eos consequatur."
+            }
+        },
+        "UserCollection": {
+            "title": "Mediatype identifier: application/vnd.user+json; type=collection; view=default",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/User"
+            },
+            "description": "UserCollection is the media type for an array of User (default view)",
+            "example": [
+                {
+                    "CreatedAt": "2008-11-04T01:21:35-08:00",
+                    "Email": "brian.lockwood@harvestmedia.io",
+                    "FirstName": "Jane",
+                    "LastName": "Doe",
+                    "UpdateAt": "1991-07-25T04:51:45-07:00",
+                    "UserId": 8649362725687117000,
+                    "href": "Ex sed recusandae et eos consequatur."
+                },
+                {
+                    "CreatedAt": "2008-11-04T01:21:35-08:00",
+                    "Email": "brian.lockwood@harvestmedia.io",
+                    "FirstName": "Jane",
+                    "LastName": "Doe",
+                    "UpdateAt": "1991-07-25T04:51:45-07:00",
+                    "UserId": 8649362725687117000,
+                    "href": "Ex sed recusandae et eos consequatur."
+                }
+            ]
+        },
+        "UserPayload": {
+            "title": "UserPayload",
+            "type": "object",
+            "properties": {
+                "Email": {
+                    "type": "string",
+                    "example": "Sed sed nisi ex."
+                },
+                "FirstName": {
+                    "type": "string",
+                    "example": "Amet eius tempora iusto sit."
+                },
+                "LastName": {
+                    "type": "string",
+                    "example": "Numquam velit et explicabo id."
+                }
+            },
+            "description": "A User.",
+            "example": {
+                "Email": "Sed sed nisi ex.",
+                "FirstName": "Amet eius tempora iusto sit.",
+                "LastName": "Numquam velit et explicabo id."
+            },
+            "required": [
+                "FirstName",
+                "LastName",
+                "Email"
+            ]
+        },
+        "error": {
+            "title": "Mediatype identifier: application/vnd.goa.error; view=default",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "an application-specific error code, expressed as a string value.",
+                    "example": "invalid_value"
+                },
+                "detail": {
+                    "type": "string",
+                    "description": "a human-readable explanation specific to this occurrence of the problem.",
+                    "example": "Value of ID must be an integer"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "a unique identifier for this particular occurrence of the problem.",
+                    "example": "3F1FKVRR"
+                },
+                "meta": {
+                    "type": "object",
+                    "description": "a meta object containing non-standard meta-information about the error.",
+                    "example": {
+                        "timestamp": 1458609066
+                    },
+                    "additionalProperties": true
+                },
+                "status": {
+                    "type": "string",
+                    "description": "the HTTP status code applicable to this problem, expressed as a string value.",
+                    "example": "400"
+                }
+            },
+            "description": "Error response media type (default view)",
+            "example": {
+                "code": "invalid_value",
+                "detail": "Value of ID must be an integer",
+                "id": "3F1FKVRR",
+                "meta": {
+                    "timestamp": 1458609066
+                },
+                "status": "400"
+            }
+        }
+    },
+    "responses": {
+        "Conflict": {
+            "description": "Conflict"
+        },
+        "NoContent": {
+            "description": "No Content"
+        },
+        "NotFound": {
+            "description": "Not Found"
+        },
+        "OK": {
+            "description": "OK",
+            "schema": {
+                "$ref": "#/definitions/User"
+            }
+        }
+    }
+}
