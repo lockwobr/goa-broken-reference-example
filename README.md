@@ -9,6 +9,7 @@ If you do the flowing you get different swagger output.
     cd $GOPATH/src/github.com/lockwobr/
     mkdir goa-broken-reference-example-test
     cp -R goa-broken-reference-example/design/ goa-broken-reference-example-test/
+    cd goa-broken-reference-example-test/
     goagen swagger -d github.com/lockwobr/goa-broken-reference-example-test/design -o public
 
 ```
